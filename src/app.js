@@ -516,9 +516,17 @@
         if (!grid) return;
         grid.innerHTML = '';
 
-        var list = PLATFORMS.length > 1
-            ? [PLATFORMS[0]].concat(shuffleArray(PLATFORMS.slice(1)))
-            : PLATFORMS;
+        var list = PLATFORMS;
+        if (PLATFORMS.length > 1) {
+            var featured = PLATFORMS[0];
+            var popbra = null;
+            var rest = [];
+            for (var i = 1; i < PLATFORMS.length; i++) {
+                if (!popbra && PLATFORMS[i].id === 4) popbra = PLATFORMS[i];
+                else rest.push(PLATFORMS[i]);
+            }
+            list = [featured].concat(popbra ? [popbra] : [], shuffleArray(rest));
+        }
 
         list.forEach(function (platform, index) {
             var live = isLiveUrl(platform.url);
